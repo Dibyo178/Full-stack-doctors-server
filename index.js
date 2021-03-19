@@ -37,6 +37,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const appointmentCollection = client.db("Doctors-portal").collection("Appointment");
   const doctorCollection = client.db("Doctors-portal").collection("doctors");
+  const contactCollection = client.db("Doctors-portal").collection("contact");
   console.log('sb connect')
 
  app.post('/addAppointment',(req,res)=>{
@@ -146,10 +147,11 @@ client.connect(err => {
     const email = req.body.email;
     const phone = req.body.phone;
     const Qualification = req.body.Qualification;
+    const Specialist = req.body.Specialist;
     const newImg = file.data;
     const encImg = newImg.toString('base64');
 
-    console.log(name,file,email,phone,Qualification);
+    console.log(name,file,email,phone,Qualification,Specialist);
 
     // cloudinary.uploader.upload(file.tempFilePath, function (error, result) {
 
@@ -177,7 +179,7 @@ client.connect(err => {
     //    return res.send({name:file.name, path: `/${file.name}`});
     // })
 
-    doctorCollection.insertOne({ name, email, image,phone,Qualification })
+    doctorCollection.insertOne({ name, email, image,phone,Qualification,Specialist })
             .then(result => {
                 res.send(result.insertedCount > 0);
             })
@@ -200,7 +202,6 @@ app.post('/isDoctor', (req, res) => {
           res.send(doctors.length > 0);
       })
 })
-
 
 
 
